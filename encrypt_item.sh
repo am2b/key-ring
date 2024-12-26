@@ -43,9 +43,6 @@ process_opts() {
 }
 
 encrypt() {
-    local item
-    item=$(get_item_path "${VAULT_NAME}" "${ITEM_NAME}")
-
     local key_password="密码"
     local key_two_step="两步验证"
 
