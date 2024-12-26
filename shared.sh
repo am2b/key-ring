@@ -12,6 +12,7 @@ KEY_KEYRING_DIR="directory"
 
 error_msg() {
     printf "ERROR:\nSCRIPT:%s\nFUNC:%s\nLINE:%d\n" "$(basename "${0}")" "${FUNCNAME[1]}" "$1"
+    exit 1
 }
 
 get_config_value() {
@@ -23,6 +24,13 @@ get_config_value() {
         echo "${value}"
         return 0
     else
-        return 1
+        error_msg "$LINENO"
     fi
+}
+
+get_keyring_dir() {
+    local keyring_dir
+    keyring_dir=$(get_config_value "${KEY_KEYRING_DIR}")
+    echo "${keyring_dir}"
+    return 0
 }

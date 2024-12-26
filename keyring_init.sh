@@ -62,7 +62,7 @@ create_keyring_config() {
 
 create_keyring_dir() {
     local keyring_dir
-    keyring_dir=$(get_config_value "${KEY_KEYRING_DIR}") || error_msg "$LINENO"
+    keyring_dir=$(get_keyring_dir)
 
     if [[ ! -d "${keyring_dir}" ]]; then
         mkdir -p "${keyring_dir}"
