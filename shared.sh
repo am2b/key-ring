@@ -1,5 +1,10 @@
 #!/usr/bin/env bash
 
+#=libs
+#@shared variables and functions
+#@usage:
+#@source shared.sh
+
 CONFIG_DIR="${HOME}"/.config/keyring
 CONFIG_FILE="${CONFIG_DIR}"/config
 

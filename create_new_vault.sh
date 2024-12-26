@@ -1,5 +1,10 @@
 #!/usr/bin/env bash
 
+#=vault
+#@create a new vault in keyring directory
+#@usage:
+#@create_new_vault.sh new_vault_name
+
 SELF_ABS_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
 source "${SELF_ABS_DIR}"/shared.sh
 
