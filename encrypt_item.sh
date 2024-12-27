@@ -43,6 +43,8 @@ process_opts() {
 }
 
 encrypt() {
+    local item="${1}"
+
     local key_password="密码"
     local key_two_step="两步验证"
 
@@ -53,6 +55,10 @@ encrypt() {
 
     ITEM_ARRAY["$key_password"]=$(do_symmetric_encrypt "${plain_password}")
     ITEM_ARRAY["$key_two_step"]=$(do_symmetric_encrypt "${plain_two_step}")
+
+    write_item "${item}"
+
+    do_asymmetric_encrypt "${item}"
 }
 
 main() {
@@ -65,9 +71,7 @@ main() {
 
     read_item "${item}"
 
-    encrypt
-
-    write_item "${item}"
+    encrypt "${item}"
 }
 
 main "${@}"

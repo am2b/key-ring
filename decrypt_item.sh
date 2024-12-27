@@ -43,6 +43,8 @@ process_opts() {
 }
 
 decrypt() {
+    local item="${1}"
+
     local key_password="密码"
     local key_two_step="两步验证"
 
@@ -53,6 +55,8 @@ decrypt() {
 
     ITEM_ARRAY["$key_password"]=$(do_symmetric_decrypt "${encrypted_password}")
     ITEM_ARRAY["$key_two_step"]=$(do_symmetric_decrypt "${encrypted_two_step}")
+
+    write_item "${item}"
 }
 
 main() {
@@ -61,13 +65,15 @@ main() {
     shift $((OPTIND - 1))
 
     local item
+    local item_gpg
     item=$(get_item_path "${VAULT_NAME}" "${ITEM_NAME}")
+    item_gpg="${item}".gpg
+
+    do_asymmetric_decrypt "${item_gpg}"
 
     read_symmetric_encrypted_item "${item}"
 
-    decrypt
-
-    write_item "${item}"
+    decrypt "${item}"
 }
 
 main "${@}"

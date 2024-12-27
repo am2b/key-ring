@@ -10,6 +10,9 @@ CONFIG_FILE="${CONFIG_DIR}"/config
 
 KEY_KEYRING_DIR="directory"
 
+#公钥的邮件地址
+RECIPIENT="${MAIL_GMAIL_MAIN}"
+
 declare -A ITEM_ARRAY
 declare -a ITEM_ARRAY_ORDER
 
@@ -62,7 +65,36 @@ do_symmetric_decrypt() {
 
 #非对称加密
 do_asymmetric_encrypt() {
-    :
+    local file="${1}"
+
+    # 使用公钥加密文件
+    gpg --encrypt --recipient "${RECIPIENT}" "${file}"
+
+    if [[ $? -ne 0 ]]; then
+        error_msg "$LINENO"
+    fi
+
+    rm "${file}"
+}
+
+do_asymmetric_decrypt() {
+    local file="${1}"
+
+    # 从 macOS 钥匙串获取 GPG 密钥的私钥密码
+    local password
+    password=$(security find-generic-password -s "gpg" -a "${RECIPIENT}" -w)
+    if [[ $? -ne 0 ]] || [[ -z "$password" ]]; then
+        error_msg "$LINENO"
+    fi
+
+    # 使用私钥解密文件
+    gpg --quiet --batch --pinentry-mode loopback --passphrase "${password}" --decrypt "${file}" >"${file%.gpg}"
+
+    if [[ $? -ne 0 ]]; then
+        error_msg "$LINENO"
+    fi
+
+    rm "${file}"
 }
 
 get_config_value() {
