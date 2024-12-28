@@ -69,6 +69,8 @@ main() {
     item=$(get_item_path "${VAULT_NAME}" "${ITEM_NAME}")
     item_gpg="${item}".gpg
 
+    check_file_exists "${item_gpg}"
+
     do_asymmetric_decrypt "${item_gpg}"
 
     read_symmetric_encrypted_item "${item}"

@@ -69,6 +69,8 @@ main() {
     local item
     item=$(get_item_path "${VAULT_NAME}" "${ITEM_NAME}")
 
+    check_file_exists "${item}"
+
     read_item "${item}"
 
     encrypt "${item}"

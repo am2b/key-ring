@@ -21,6 +21,13 @@ error_msg() {
     exit 1
 }
 
+check_file_exists() {
+    local file="${1}"
+    if [[ ! -f "${file}" ]]; then
+        error_msg "$LINENO"
+    fi
+}
+
 get_gpg_symmetric_password_from_keychain() {
     local password
     password=$(security find-generic-password -s "gpg-symmetric" -a "${MAIL_GMAIL_MAIN}" -w) || error_msg "$LINENO"
