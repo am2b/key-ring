@@ -52,6 +52,11 @@ main() {
     local item_path
     item_path="${vault_path}"/"${ITEM_NAME}"
 
+
+    #确保只有用户自己能访问
+    touch "${item_path}"
+    chmod 600 "${item_path}"
+
     nvim "${item_path}"
 }
 

@@ -73,6 +73,7 @@ do_symmetric_decrypt() {
 #非对称加密
 do_asymmetric_encrypt() {
     local file="${1}"
+    local file_gpg="${file}".gpg
 
     # 使用公钥加密文件
     gpg --encrypt --recipient "${RECIPIENT}" "${file}"
@@ -81,11 +82,14 @@ do_asymmetric_encrypt() {
         error_msg "$LINENO"
     fi
 
-    rm "${file}"
+    chmod 600 "${file_gpg}"
+
+    rm -f "${file}"
 }
 
 do_asymmetric_decrypt() {
-    local file="${1}"
+    local file_gpg="${1}"
+    local file="${file_gpg%.gpg}"
 
     # 从 macOS 钥匙串获取 GPG 密钥的私钥密码
     local password
@@ -95,13 +99,15 @@ do_asymmetric_decrypt() {
     fi
 
     # 使用私钥解密文件
-    gpg --quiet --batch --pinentry-mode loopback --passphrase "${password}" --decrypt "${file}" >"${file%.gpg}"
+    gpg --quiet --batch --pinentry-mode loopback --passphrase "${password}" --decrypt "${file_gpg}" >"${file}"
 
     if [[ $? -ne 0 ]]; then
         error_msg "$LINENO"
     fi
 
-    rm "${file}"
+    chmod 600 "${file}"
+
+    rm -f "${file_gpg}"
 }
 
 get_config_value() {
@@ -235,4 +241,6 @@ write_item() {
 
     #删除掉文件末尾的空行
     sed -i -e :a -e '/^\n*$/{$d;N;ba' -e '}' "${item}"
+
+    chmod 600 "${item}"
 }
