@@ -75,8 +75,18 @@ do_asymmetric_encrypt() {
     local file="${1}"
     local file_gpg="${file}".gpg
 
-    # 使用公钥加密文件
-    gpg --encrypt --recipient "${RECIPIENT}" "${file}"
+    # 从macOS钥匙串获取GPG密钥的私钥密码(签名的时候,需要使用私钥对哈希值进行加密来生成数字签名)
+    local password
+    password=$(security find-generic-password -s "gpg" -a "${RECIPIENT}" -w)
+    if [[ $? -ne 0 ]] || [[ -z "$password" ]]; then
+        error_msg "$LINENO"
+    fi
+
+    # 使用私钥对文件进行签名,然后使用公钥加密文件
+    #--batch:启用非交互模式
+    #--pinentry-modeloopback:指示GPG不调用图形化的pinentry程序,而是直接在命令行处理密码
+    #--passphrase:通过变量传递密码
+    gpg --batch --pinentry-mode loopback --passphrase "${password}" --encrypt --sign --recipient "${RECIPIENT}" "${file}"
 
     if [[ $? -ne 0 ]]; then
         error_msg "$LINENO"
@@ -91,7 +101,7 @@ do_asymmetric_decrypt() {
     local file_gpg="${1}"
     local file="${file_gpg%.gpg}"
 
-    # 从 macOS 钥匙串获取 GPG 密钥的私钥密码
+    # 从macOS钥匙串获取GPG密钥的私钥密码
     local password
     password=$(security find-generic-password -s "gpg" -a "${RECIPIENT}" -w)
     if [[ $? -ne 0 ]] || [[ -z "$password" ]]; then
@@ -99,7 +109,7 @@ do_asymmetric_decrypt() {
     fi
 
     # 使用私钥解密文件
-    gpg --quiet --batch --pinentry-mode loopback --passphrase "${password}" --decrypt "${file_gpg}" >"${file}"
+    gpg --quiet --batch --pinentry-mode loopback --passphrase "${password}" --decrypt "${file_gpg}" >"${file}" 2>/dev/null
 
     if [[ $? -ne 0 ]]; then
         error_msg "$LINENO"
