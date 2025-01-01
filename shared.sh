@@ -109,8 +109,8 @@ do_asymmetric_decrypt() {
     fi
 
     # 使用私钥解密文件
-    #如果文件有签名,gpg--decrypt会自动验证签名,加上--verify,如果文件没有签名,GPG会报错
-    gpg --quiet --batch --pinentry-mode loopback --passphrase "${password}" --decrypt --verify "${file_gpg}" >"${file}" 2>/dev/null
+    #如果文件有签名,gpg --decrypt会自动验证签名
+    gpg --quiet --batch --pinentry-mode loopback --passphrase "${password}" --decrypt "${file_gpg}" >"${file}" 2>/dev/null
 
     if [[ $? -ne 0 ]]; then
         error_msg "$LINENO"
