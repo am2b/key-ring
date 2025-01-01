@@ -1,5 +1,10 @@
 #!/usr/bin/env bash
 
+#=password
+#@generate password
+#@usage:
+#@generate_password.sh length
+
 usage() {
     echo "用法: $0 <长度>"
     exit 1
