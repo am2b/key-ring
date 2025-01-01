@@ -163,8 +163,7 @@ get_item_path() {
 
 read_item() {
     local item="${1}"
-
-    current_key=""
+    local current_key=""
 
     #设置IFS=的作用是告诉read命令不将空格,制表符或换行符视为分隔符,这意味着读取的每一行会被完整保留,包括前导和尾随空格
     #-r:禁用反斜杠转义,如果没有-r,反斜杠(\)会被解析为转义符
@@ -184,6 +183,58 @@ read_item() {
             ITEM_ARRAY["$current_key"]+="${line}"$'\n'
         fi
     done <"${item}"
+
+    #这样就允许将"标签"写在一行用空格分开,或者写在多行,也允许用引号扩住包含空格的"标签"
+    if [[ -v ITEM_ARRAY[标签] ]]; then
+        declare -a tags
+        #禁用IFS以免将引号扩住的字符串从中间的空格分割开来
+        while IFS= read -r line; do
+            # 将中文引号替换为英文双引号
+            line="${line//‘/\"}"
+            line="${line//’/\"}"
+            line="${line//“/\"}"
+            line="${line//”/\"}"
+            # 将英文单引号替换为英文双引号
+            line="${line//\'/\"}"
+
+            temp_array=()
+
+            #通过正则表达式从每一行中提取出符合条件的元素(比如引号内的内容和普通单词),并将它们添加到数组中
+
+            #regex_double_quote='"([^"]|\\.)*"':该正则表达式用于匹配引号内的内容,包括双引号内的文本
+            #":匹配一个英文双引号字符
+            #([^"]|\\.)*:这是一个捕获组,用于匹配双引号内部的内容,它可以匹配:
+            #[^"]:任意非双引号字符
+            #\\.:匹配转义字符(如\"),\是转义字符,\\.可以匹配双引号内部的转义字符
+            #":匹配另一个英文双引号,表示字符串的结束
+
+            #regex_word='[^[:space:]]+':该正则表达式用于匹配普通的单词,即没有空格的连续字符
+            #[^[:space:]]:匹配所有非空白字符
+            #+:表示一个或多个非空白字符
+
+            local regex_double_quote='"([^"]|\\.)*"'
+            local regex_word='[^[:space:]]+'
+
+            #=~:模式匹配
+            while [[ $line =~ $regex_double_quote|$regex_word ]]; do
+                #token="${BASH_REMATCH[0]}":取出匹配的结果,并将其赋值给token
+                #每次成功匹配后,Bash会将匹配的结果存储在内置变量BASH_REMATCH中,BASH_REMATCH[0]保存的是整个匹配的文本
+                local token="${BASH_REMATCH[0]}"
+                temp_array+=("$token")
+                #line=${line#*"${BASH_REMATCH[0]}"}:将已经匹配的部分从line字符串中删除,#*用于从字符串的开头删除匹配的部分,即删除已提取出的token
+                #例如,如果line为"tag1 tag2",当第一次匹配"tag1"后,line将变为"tag2"
+                line=${line#*"${BASH_REMATCH[0]}"}
+                #line=${line## }:删除了line字符串开头的所有空白字符(如果有的话)
+                line=${line## }
+            done
+            tags+=("${temp_array[@]}")
+        done < <(echo -e "${ITEM_ARRAY[标签]}")
+        #< <():进程替代
+        #echo -e:将值中的换行符解析为真正的换行
+
+        # 将普通数组的元素用换行符分隔并替换到关联数组中
+        ITEM_ARRAY["标签"]=$(printf "%s\n" "${tags[@]}")
+    fi
 
     # 去除每个值末尾多余的换行符
     for key in "${!ITEM_ARRAY[@]}"; do
