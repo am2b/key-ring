@@ -3,7 +3,7 @@
 #=setup
 #@init keyring:create directory of keyring and create config file
 #@usage:
-#@keyring_init
+#@keyring_init.sh
 
 #获取该脚本(我)自己所在目录的绝对路径
 SELF_ABS_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
