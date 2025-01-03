@@ -45,16 +45,15 @@ process_opts() {
 encrypt() {
     local item="${1}"
 
-    local key_password="密码"
-    local key_two_step="两步验证"
+    local keys=()
+    keys=($(get_config_value "symmetric"))
 
-    local plain_password
-    local plain_two_step
-    plain_password="${ITEM_ARRAY[$key_password]}"
-    plain_two_step="${ITEM_ARRAY[$key_two_step]}"
-
-    ITEM_ARRAY["$key_password"]=$(do_symmetric_encrypt "${plain_password}")
-    ITEM_ARRAY["$key_two_step"]=$(do_symmetric_encrypt "${plain_two_step}")
+    for key in "${keys[@]}"; do
+        if [[ -v ITEM_ARRAY["${key}"] ]]; then
+            local plain="${ITEM_ARRAY[$key]}"
+            ITEM_ARRAY["$key"]=$(do_symmetric_encrypt "${plain}")
+        fi
+    done
 
     write_item "${item}"
 
