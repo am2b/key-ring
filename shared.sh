@@ -202,8 +202,7 @@ read_item() {
             line="${line//\'/\"}"
             #将不在英文双引号内的英文逗号和中文逗号替换为空格
             #将不在英文双引号内的连续空格压缩为1个空格
-            local line_tmp
-            line_tmp=$(echo "$line" | awk -F\" '
+            line=$(echo "$line" | awk -F\" '
             {
                 result = ""
                 for (i = 1; i <= NF; i++) {
@@ -225,7 +224,6 @@ read_item() {
                 }
                 print result
             }')
-            line="${line_tmp}"
 
             temp_array=()
 
