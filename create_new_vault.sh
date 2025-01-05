@@ -44,8 +44,6 @@ create_new_vault() {
 
     if [[ ! -d "${new_vault_path}" ]]; then
         mkdir -p "${new_vault_path}"
-    else
-        error_msg "$LINENO"
     fi
 }
 
