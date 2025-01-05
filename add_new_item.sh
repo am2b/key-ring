@@ -52,6 +52,11 @@ main() {
     local item_path
     item_path="${vault_path}"/"${ITEM_NAME}"
 
+    #检查是否有同名的item
+    if [[ -e "${item_path}" ]]; then
+        echo "An item with the same name exists"
+        error_msg "$LINENO"
+    fi
 
     #确保只有用户自己能访问
     touch "${item_path}"
