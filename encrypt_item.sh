@@ -3,7 +3,7 @@
 #=gpg
 #@encrypt a item
 #@usage:
-#@encrypt_item.sh -i item_name -v vault_name
+#@encrypt_item.sh -v vault_name -i item_name
 
 SELF_ABS_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
 source "${SELF_ABS_DIR}"/shared.sh
@@ -12,7 +12,7 @@ usage() {
     local script
     script=$(basename "$0")
     echo "usage:"
-    echo "$script -i item_name -v vault_name"
+    echo "$script -v vault_name -i item_name"
     exit 1
 }
 
