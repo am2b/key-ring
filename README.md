@@ -10,17 +10,22 @@ create_new_vault.sh new_vault_name
 
 Add a new item to a vault:
 ```bash
-add_new_item.sh -i item_name -v vault_name
+add_new_item.sh -v vault_name -i item_name
 ```
 
 Encrypt a item:
 ```bash
-encrypt_item.sh -i item_name -v vault_name
+encrypt_item.sh -v vault_name -i item_name
 ```
 
 Decrypt a item:
 ```bash
-decrypt_item.sh -i item_name -v vault_name
+decrypt_item.sh -v vault_name -i item_name
+```
+
+Archive an item:
+```bash
+archive_item.sh -v vault_name -i item_name
 ```
 
 List all vaults in the keyring directory:
