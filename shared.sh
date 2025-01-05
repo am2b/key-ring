@@ -269,6 +269,12 @@ read_item() {
         # 使用printf去掉末尾的换行符,同时保留中间的换行符
         ITEM_ARRAY["$key"]=$(printf "%s" "${ITEM_ARRAY[$key]}")
     done
+
+    #如果没有UUID的话,则在最开始添加UUID
+    if [[ ! -v ITEM_ARRAY[UUID] ]]; then
+        ITEM_ARRAY["UUID"]=$(uuidgen)
+        ITEM_ARRAY_ORDER=("UUID" "${ITEM_ARRAY_ORDER[@]}")
+    fi
 }
 
 read_symmetric_encrypted_item() {
