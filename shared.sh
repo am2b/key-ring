@@ -163,6 +163,7 @@ get_item_path() {
 
 read_item() {
     local item="${1}"
+
     local current_key=""
 
     #设置IFS=的作用是告诉read命令不将空格,制表符或换行符视为分隔符,这意味着读取的每一行会被完整保留,包括前导和尾随空格
@@ -184,7 +185,10 @@ read_item() {
         fi
     done <"${item}"
 
-    #这样就允许将"标签"写在一行用空格分开,或者写在多行,也允许用引号扩住包含空格的"标签"
+    #这样就允许将"标签":
+    #写在一行用空格/英文逗号/中文逗号分开
+    #写在多行
+    #用引号扩住包含空格的"标签"
     if [[ -v ITEM_ARRAY[标签] ]]; then
         declare -a tags
         #禁用IFS以免将引号扩住的字符串从中间的空格分割开来
@@ -196,6 +200,32 @@ read_item() {
             line="${line//”/\"}"
             # 将英文单引号替换为英文双引号
             line="${line//\'/\"}"
+            #将不在英文双引号内的英文逗号和中文逗号替换为空格
+            #将不在英文双引号内的连续空格压缩为1个空格
+            local line_tmp
+            line_tmp=$(echo "$line" | awk -F\" '
+            {
+                result = ""
+                for (i = 1; i <= NF; i++) {
+                    #奇数字段(双引号外)
+                    if (i % 2 == 1) {
+                        #将英文逗号和中文逗号替换为空格
+                        gsub(",", " ", $i)
+                        gsub("，", " ", $i)
+                        #压缩连续空格为1个空格
+                        gsub(/[[:space:]]+/, " ", $i)
+                        #拼接处理后的字段
+                        result = result $i
+                    }
+                    #偶数字段(双引号内)
+                    else {
+                        #保留双引号
+                        result = result "\"" $i "\""
+                    }
+                }
+                print result
+            }')
+            line="${line_tmp}"
 
             temp_array=()
 
