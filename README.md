@@ -23,6 +23,11 @@ Decrypt a item:
 decrypt_item.sh -v vault_name -i item_name
 ```
 
+View a item:
+```bash
+view_item.sh -v vault_name -i item_name
+```
+
 Archive an item:
 ```bash
 archive_item.sh -v vault_name -i item_name
