@@ -18,6 +18,11 @@ View a item:
 view_item.sh -v vault_name -i item_name
 ```
 
+Edit a item:
+```bash
+edit_item.sh -v vault_name -i item_name
+```
+
 Archive an item:
 ```bash
 archive_item.sh -v vault_name -i item_name
