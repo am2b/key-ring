@@ -41,10 +41,10 @@ list_vaults() {
     keyring_dir=$(get_keyring_dir)
 
     local vaults
-    vaults=($(find "${keyring_dir}" -mindepth 1 -type d))
+    vaults=($(find "${keyring_dir}" -path "${keyring_dir}/.*" -prune -o -mindepth 1 -type d -print))
 
     for v in "${vaults[@]}"; do
-        echo "${v}"
+        basename "${v}"
     done
 }
 
