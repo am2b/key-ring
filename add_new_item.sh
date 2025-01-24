@@ -62,7 +62,11 @@ main() {
     touch "${item_path}"
     chmod 600 "${item_path}"
 
+    #输入信息
     nvim "${item_path}"
+
+    #加密
+    bash "${SELF_ABS_DIR}"/encrypt_item.sh -v "${VAULT_NAME}" -i "${ITEM_NAME}"
 }
 
 main "${@}"

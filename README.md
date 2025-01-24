@@ -13,16 +13,6 @@ Add a new item to a vault:
 add_new_item.sh -v vault_name -i item_name
 ```
 
-Encrypt a item:
-```bash
-encrypt_item.sh -v vault_name -i item_name
-```
-
-Decrypt a item:
-```bash
-decrypt_item.sh -v vault_name -i item_name
-```
-
 View a item:
 ```bash
 view_item.sh -v vault_name -i item_name
