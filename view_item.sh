@@ -55,10 +55,7 @@ main() {
     item_gpg_path="${item_path}".gpg
 
     #检查所要查看的item是否存在
-    if [[ ! -e "${item_gpg_path}" ]]; then
-        echo "The item:${ITEM_NAME} does not exist"
-        error_msg "$LINENO"
-    fi
+    check_file_exists "${item_gpg_path}"
 
     #将item拷贝到.workspace目录下
     local workspace_path
