@@ -18,6 +18,11 @@ View a item:
 view_item.sh -v vault_name -i item_name
 ```
 
+Fuzzy view a item:
+```bash
+fuzzy_view_item.sh
+```
+
 Edit a item:
 ```bash
 edit_item.sh -v vault_name -i item_name
