@@ -1,3 +1,4 @@
+## Usage:
 Create directory of keyring and create config file:
 ```bash
 keyring_init.sh
