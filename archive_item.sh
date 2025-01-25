@@ -49,24 +49,26 @@ main() {
 
     local item
     item=$(get_item_path "${VAULT_NAME}" "${ITEM_NAME}")
+    local item_gpg
+    item_gpg="${item}.gpg"
 
-    check_file_exists "${item}"
+    check_file_exists "${item_gpg}"
 
     local keyring_dir
-    keyring_dir=$(get_config_value "${KEY_KEYRING_DIR}") || error_msg "$LINENO"
+    keyring_dir=$(get_keyring_dir)
     local archive_vault_path="${keyring_dir}"/.archive/"${VAULT_NAME}"
 
     if [[ ! -d "${archive_vault_path}" ]]; then
         mkdir -p "${archive_vault_path}"
     fi
 
-    if [[ -f "${archive_vault_path}"/"${ITEM_NAME}" ]]; then
+    if [[ -f "${archive_vault_path}"/"${item_gpg}" ]]; then
         timestamp=$(date +"%Y-%m-%d_%H-%M-%S")
-        local new_item_name="${item}"_"${timestamp}"
-        mv "${item}" "${new_item_name}"
-        mv "${new_item_name}" "${archive_vault_path}"
+        local new_item_gpg_name="${item_gpg}"_"${timestamp}"
+        mv "${item_gpg}" "${new_item_gpg_name}"
+        mv "${new_item_gpg_name}" "${archive_vault_path}"
     else
-        mv "${item}" "${archive_vault_path}"
+        mv "${item_gpg}" "${archive_vault_path}"
     fi
 }
 
