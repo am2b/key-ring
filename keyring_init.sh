@@ -57,6 +57,7 @@ create_keyring_config() {
 
     if [[ ! -f "${CONFIG_FILE}" ]]; then
         echo "directory=$HOME/.keyring" >>"${CONFIG_FILE}"
+        echo "symmetric=password totp" >>"${CONFIG_FILE}"
     fi
 }
 
