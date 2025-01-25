@@ -55,7 +55,7 @@ main() {
     #检查用户是否选择了文件
     if [[ -n "$selected_item" ]]; then
         VAULT_NAME=$(dirname "${selected_item}")
-        ITEM_NAME=$(basename "${selected_item%%.*}")
+        ITEM_NAME=$(basename "${selected_item%.*}")
 
         #edit
         bash "${SELF_ABS_DIR}"/edit_item.sh -v "${VAULT_NAME}" -i "${ITEM_NAME}"
