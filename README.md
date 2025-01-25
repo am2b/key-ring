@@ -28,6 +28,11 @@ Edit a item:
 edit_item.sh -v vault_name -i item_name
 ```
 
+Fuzzy edit a item:
+```bash
+fuzzy_edit_item.sh
+```
+
 Archive an item:
 ```bash
 archive_item.sh -v vault_name -i item_name
