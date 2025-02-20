@@ -14,22 +14,22 @@ Add a new item to a vault:
 add_new_item.sh -v vault_name -i item_name
 ```
 
-View a item:
+View an item:
 ```bash
 view_item.sh -v vault_name -i item_name
 ```
 
-Fuzzy view a item:
+Fuzzy view an item:
 ```bash
 fuzzy_view_item.sh
 ```
 
-Edit a item:
+Edit an item:
 ```bash
 edit_item.sh -v vault_name -i item_name
 ```
 
-Fuzzy edit a item:
+Fuzzy edit an item:
 ```bash
 fuzzy_edit_item.sh
 ```
@@ -37,6 +37,11 @@ fuzzy_edit_item.sh
 Archive an item:
 ```bash
 archive_item.sh -v vault_name -i item_name
+```
+
+Fuzzy archive an item:
+```bash
+fuzzy_archive_item
 ```
 
 List all vaults in the keyring directory:
