@@ -5,7 +5,7 @@
 #@usage:
 #@source shared.sh
 
-CONFIG_DIR="${HOME}"/.config/keyring
+CONFIG_DIR="${HOME}"/.config/key-ring
 CONFIG_FILE="${CONFIG_DIR}"/config
 
 KEY_KEYRING_DIR="directory"
