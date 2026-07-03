@@ -53,6 +53,8 @@ main() {
     process_opts "${@}"
     shift $((OPTIND - 1))
 
+    required_tools
+
     list_vaults
 }
 

@@ -76,6 +76,8 @@ main() {
     process_opts "${@}"
     shift $((OPTIND - 1))
 
+    required_tools
+
     check_gpg
 
     create_keyring_config

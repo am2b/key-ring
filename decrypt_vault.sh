@@ -71,6 +71,8 @@ main() {
     process_opts "${@}"
     shift $((OPTIND - 1))
 
+    required_tools
+
     local keyring_dir
     local vault_name
     local vault_dir

@@ -65,6 +65,8 @@ main() {
     process_opts "${@}"
     shift $((OPTIND - 1))
 
+    required_tools
+
     local item
     item=$(get_item_path "${VAULT_NAME}" "${ITEM_NAME}")
 

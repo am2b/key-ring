@@ -41,6 +41,8 @@ main() {
     process_opts "${@}"
     shift $((OPTIND - 1))
 
+    required_tools
+
     key_ring_dir=$(get_keyring_dir)
 
     #定义需要忽略的目录

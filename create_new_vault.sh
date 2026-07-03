@@ -52,6 +52,8 @@ main() {
     process_opts "${@}"
     shift $((OPTIND - 1))
 
+    required_tools
+
     local new_vault_name
     new_vault_name="${1}"
     create_new_vault "${new_vault_name}"

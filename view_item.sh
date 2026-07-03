@@ -47,6 +47,8 @@ main() {
     process_opts "${@}"
     shift $((OPTIND - 1))
 
+    required_tools
+
     local vault_path
     vault_path=$(get_keyring_dir)/"${VAULT_NAME}"
     local item_path

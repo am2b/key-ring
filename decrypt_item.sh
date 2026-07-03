@@ -63,6 +63,8 @@ main() {
     process_opts "${@}"
     shift $((OPTIND - 1))
 
+    required_tools
+
     local item
     local item_gpg
     item=$(get_item_path "${VAULT_NAME}" "${ITEM_NAME}")

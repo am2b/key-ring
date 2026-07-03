@@ -21,6 +21,20 @@ error_msg() {
     exit 1
 }
 
+required_tools() {
+    local tools=("sed" "awk" "find" "grep")
+    for tool in "${tools[@]}"; do
+        if ! command -v "$tool" >/dev/null 2>&1; then
+            echo "$tool 未安装,请安装 GNU Coreutils"
+            exit 1
+        fi
+        if ! "$tool" --version 2>/dev/null | grep -q "GNU"; then
+            echo "$tool 不是 GNU Coreutils 版本,请安装正确版本"
+            exit 1
+        fi
+    done
+}
+
 check_file_exists() {
     local file="${1}"
     if [[ ! -f "${file}" ]]; then
